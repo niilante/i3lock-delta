@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+# Get the config
+source box_config
+
+# Get the resolution
+resolution=`xdpyinfo | grep dimensions | sed 's/dimensions://;;s/ *//g;s/pixels.*//'`
+
+# Run the main loop
+while : ; do
+	# Check whether the previous image has been used or not.
+	# If no, wait 300 secs and check again.
+	[[ `< $HOME/.config/lock_screen.sta` -eq 0 ]] && sleep 300 && continue
+	# Download the new image
+	$HOME/i3lock-delta/downloader.php
+	if [[ $? -eq 0 ]]; then
+		name_photographer="`< /tmp/name_photographer`"
+
+		# Resize, crop, draw a box for clock, write photographer's name.
+		convert $HOME/.rand_bg -resize "$resolution^" -crop "$resolution" \
+				-draw "fill black fill-opacity 0.4  roundRectangle
+				$BOX_TOP_LEFT_X,$BOX_TOP_LEFT_Y $BOX_BOTTOM_RIGHT_X,$BOX_BOTTOM_RIGHT_Y
+				$ROUNDENESS,$ROUNDENESS text $NAME_X,$NAME_Y 'Photograph by: $name_photographer on Unsplash'" \
+				/tmp/temp_lock.png
+
+		# Move to needed place and remove the rest.
+		if [[ -f /tmp/temp_lock-0.png ]] ; then
+			mv /tmp/temp_lock-0.png $HOME/.rand_bg.png
+			rm /tmp/temp_lock-1.png
+		fi
+
+		# Remove the original
+		rm $HOME/.rand_bg
+		# Set the image as unused.
+		echo 0 > $HOME/.config/lock_screen.sta
+	else
+		# If download fails, wait 60 secs and restart.
+		sleep 60
+	fi
+done

@@ -1,0 +1,44 @@
+#!/bin/bash
+TIMECOLOR="00FFFFFF"
+TIMEFONT="Neuropolitical"
+TIMESIZE=60
+TIMESTYLE="%H:%M:%S"
+DATECOLOR="00FFFFFF"
+DATEFONT="Space Age"
+DATESIZE=25
+DATESTYLE="%A, %d %b"
+# Ring Colors
+VERIFYING_INSIDE="FFFFFF44"
+WRONG_INSIDE="FF000044"
+INSIDE="00000000"
+LINE="00000000"
+KEYPRESS="FFFFFFFF"
+BACKSPACEPRESS="CCCCCCFF"
+RINGCOLOR="F7045DFF"
+RINGVERIFYINGCOLOR="F7045DFF"
+RINGWRONGCOLOR="F7045DFF"
+RINGTEXTSIZE=14
+RINGRADIUS=45
+
+# Get custom config
+source $HOME/i3lock-delta/config
+
+# Pause dunst
+pkill -u ahmad_saalim -USR1 dunst
+# Set the image as used.
+echo 1 > $HOME/.config/lock_screen.sta
+xset dpms force off
+
+# Call the lock
+i3lock -i $HOME/.rand_bg.png -knf \
+    --timecolor="$TIMECOLOR" --layout-align 1 --time-align 1 --timefont="$TIMEFONT" \
+    --datecolor="$DATECOLOR" --timepos "30:h-ch" --datesize="$DATESIZE" \
+    --timesize="$TIMESIZE" --datestr="$DATESTYLE" -e --datefont="$DATEFONT" \
+    --date-align 1 --insidevercolor="$VERIFYING_INSIDE" --insidewrongcolor="$WRONG_INSIDE" \
+    --insidecolor="$INSIDE" --linecolor="$LINE" --keyhlcolor="$KEYPRESS" --bshlcolor="$BACKSPACEPRESS" \
+    --ringcolor="$RINGCOLOR" --ringvercolor="$RINGVERIFYINGCOLOR" --ringwrongcolor="$RINGWRONGCOLOR" \
+    --separatorcolor="$KEYPRESS" --indpos="w-r-30:h-r-60" --radius="$RINGRADIUS" --modsize=1 \
+    --textsize="$RINGTEXTSIZE" --indicator --timestr="$TIMESTYLE"
+
+# Resume dunst
+pkill -u ahmad_saalim -USR2 dunst
