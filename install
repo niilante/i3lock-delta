@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+red="\033[38;5;1m"
+blue="\033[38;5;6m"
+reset="\033[0;5;0m"
+
+function check_exec() {
+  if hash $1 2> /dev/null ; then
+    echo $2 is installed
+  else
+    echo -en "$red"
+    echo $2 is not installed or not in PATH
+    echo Exiting ...
+    echo -en "$reset"
+    exit
+  fi
+}
+
+echo -e "${blue}Checking Dependencies $reset"
+
+check_exec php PHP
+check_exec composer Composer
+check_exec i3lock i3lock-color
+check_exec convert Imagemagick
+
+echo -e "${blue}Dependencies Satisfied $reset \n"
+
+echo -e "${blue}Checking repository location $reset"
+cd $HOME/i3lock-delta
+if [[ $? -ne 0 ]]; then
+  echo -e "$red Please clone the repo in your home folder $reset"
+  exit
+else
+  echo "OK"
+fi
+echo -e "${blue}Checked repository location $reset \n"
+echo -e "${blue}Installing Libraries $reset"
+sleep 1
+composer install
+if [[ $? -ne 0 ]]; then
+  echo -e "$red Unable to install libraries. Check your internet connection"
+  echo -e "If the problem persists, open an issue at https://github.com/Ceda-EI/i3lock-delta/issues"
+  echo -e "$reset"
+fi
+
+echo -e "${blue}Finished Installing Libraries $reset \n"
+
+echo -e "${blue}Creating Required Files$reset"
+
+mkdir -p $HOME/.config
+echo 1 > $HOME/.config/lock_screen.sta
+> $HOME/.config/lock_preferences
+
+echo -e "${blue}Finished Creating Required Files $reset \n"
+echo -e "${blue}Installation Successful $reset"
+echo -e "${blue}To set your random lock image themes, edit ~/.config/lock_preferences and enter your themes one per line."
