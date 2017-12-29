@@ -19,7 +19,8 @@ while : ; do
 		convert $HOME/.rand_bg -resize "$resolution^" -crop "$resolution" \
 				-draw "fill black fill-opacity 0.4  roundRectangle
 				$BOX_TOP_LEFT_X,$BOX_TOP_LEFT_Y $BOX_BOTTOM_RIGHT_X,$BOX_BOTTOM_RIGHT_Y
-				$ROUNDENESS,$ROUNDENESS text $NAME_X,$NAME_Y 'Photograph by: $name_photographer on Unsplash'" \
+				$ROUNDENESS,$ROUNDENESS" -pointsize 17 -draw "text $NAME_X,$NAME_Y
+				'Photograph by: $name_photographer on Unsplash'" \
 				/tmp/temp_lock.png
 
 		# Move to needed place and remove the rest.
