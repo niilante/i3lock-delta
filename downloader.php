@@ -13,11 +13,19 @@ $queries_file_name = getenv('HOME') . '/.config/lock_preferences';
 $queries = file($queries_file_name);
 
 # Create the random photo limitations
-$filters = [
-	'featured' => false,
-	'query' => $queries[rand(0,count($queries) - 1)],
-	'orientation' => 'landscape'
-];
+if (count($queries) == 0){
+	$filters = [
+		'featured' => false,
+		'orientation' => 'landscape'
+	];
+}
+else {
+	$filters = [
+		'featured' => false,
+		'query' => $queries[rand(0,count($queries) - 1)],
+		'orientation' => 'landscape'
+	];
+}
 
 # Get the random photo
 $img = Crew\Unsplash\Photo::random($filters);
