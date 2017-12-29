@@ -50,12 +50,15 @@ mkdir -p $HOME/.config
 echo 1 > $HOME/.config/lock_screen.sta
 > $HOME/.config/lock_preferences
 
-read y <<<$(xdpyinfo | awk -F'[ x]+' '/dimensions:/{print $4}')
+read x y <<<$(xdpyinfo | awk -F'[ x]+' '/dimensions:/{print $3, $4}')
 > box_config
-echo "BOX_TOP_LEFT_X=10"
-echo "BOX_TOP_LEFT_Y=$(($y-160))"
-echo "BOX_BOTTOM_RIGHT_X=410"
-echo "BOX_BOTTOM_RIGHT_Y=$(($y-50))"
+echo "BOX_TOP_LEFT_X=10" >> box_config
+echo "BOX_TOP_LEFT_Y=$(($y-160))" >> box_config
+echo "BOX_BOTTOM_RIGHT_X=410" >> box_config
+echo "BOX_BOTTOM_RIGHT_Y=$(($y-50))" >> box_config
+echo "ROUNDENESS=50" >> box_config
+echo "NAME_X=$(( $x / 3 ))" >> box_config
+echo "NAME_Y=17" >> box_config
 echo -e "${blue}Finished Creating Required Files $reset \n"
 echo -e "${blue}Installation Successful $reset"
 echo -e "${blue}To set your random lock image themes, edit ~/.config/lock_preferences and enter your themes one per line."
