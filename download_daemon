@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Get the config
-source box_config
+source $HOME/i3lock-delta/box_config
 
 # Get the resolution
 resolution=`xdpyinfo | grep dimensions | sed 's/dimensions://;;s/ *//g;s/pixels.*//'`
