@@ -30,7 +30,7 @@ echo 1 > $HOME/.config/lock_screen.sta
 xset dpms force off
 
 # Call the lock
-i3lock -i $HOME/.rand_bg.png -knf \
+i3lock -i $HOME/.rand_bg.png -knf --force-clock\
     --timecolor="$TIMECOLOR" --layout-align 1 --time-align 1 --timefont="$TIMEFONT" \
     --datecolor="$DATECOLOR" --timepos "30:h-ch" --datesize="$DATESIZE" \
     --timesize="$TIMESIZE" --datestr="$DATESTYLE" -e --datefont="$DATEFONT" \
